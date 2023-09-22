@@ -50,10 +50,15 @@ app.post('/api/products', (req, res) => {
 
 app.put('/api/products/:id', (req, res) => {
     const id = Number(req.params.id)
-    const updatedProduct = { id, ...req.body }
-    let exists = data.find(product => Number(product.id) === id)
-    if (!exists) {
+    let updatedProduct = data.find(product => Number(product.id) === id)
+    if (!updatedProduct) {
         return res.status(404).end()
+    }
+    if (req.body.name) {
+        updatedProduct.name = req.body.name
+    }
+    if (req.body.quantity) {
+        updatedProduct.quantity = req.body.quantity
     }
     data = data.map(product => Number(product.id) !== id ? product : updatedProduct)
 
